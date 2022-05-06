@@ -17,6 +17,7 @@ Start
   ^\s*The\s+operation\s+is\s+not\s+supported\s+ -> Record Start
   ^\s*DEVICE_NAME\s*:\s*${DEVICE_NAME}
   ^\s*DEVICE_SERIAL_NUMBER\s*:\s*${SERIAL_NUMBER}
+  ^MANU\s+SERIAL\s+NUMBER\s*:\s*${SERIAL_NUMBER}
   ^\s*MAC_ADDRESS\s*:\s*${MAC_ADDRESS}
   ^\s*MANUFACTURING_DATE\s*:\s*${MANUFACTURING_DATE}
   ^\s*VENDOR_NAME\s*:\s*${VENDOR_NAME} -> Record Start

@@ -46,15 +46,12 @@ Start
   ^PVID:\s+${PVID}
   ^Port\s+link-type:\s+${LINK_TYPE}
   ^Last\s+link\s+flapping:\s+${LAST_FLAPPING}
-  # 如果接口不存在计数信息（例如 Serial），直接开始匹配下一个接口
+  ^\s*$$ -> Continue.Record
   ^\s*$$  -> Start
-  # 虚拟接口计数匹配
   ^\s?Input:\s*${RX_PKTS}\s+packets,\s+${RX_BYTES}\s+bytes(,\s+\d+\s+buffers)?(,\s+${RX_ABORTS}\s+drops)?
-  ^\s?Output:\s*${TX_PKTS}\s+packets,\s+${TX_BYTES}\s+bytes(,\s+\d+\s+buffers)?(,\s+${TX_ABORTS}\s+drops)? -> Start
+  ^\s?Output:\s*${TX_PKTS}\s+packets,\s+${TX_BYTES}\s+bytes(,\s+\d+\s+buffers)?(,\s+${TX_ABORTS}\s+drops)?
   # 物理接口计数匹配
-  ^\s*Input\s+\(total\) -> INPUT
-
-
+  
 
 # for physical interfaces
 INPUT
@@ -62,10 +59,13 @@ INPUT
   ^\s*${RX_UNICAST}\s+unicasts,\s+${RX_BROADCAST}\s+broadcasts,\s+${RX_MULTICAST}\s+multicasts,\s+\d+\s+pauses
   ^\s*Input:\s+${RX_ERRORS}\s+input\s+errors,
   ^\s*${RX_CRC}\s+CRC,\s+\d+\s+frame,\s+\d+\s+overruns,\s+${RX_ABORTS}\s+aborts -> OUTPUT
-
+  ^\s*$$  -> Start
+  
 # for physical interfaces
 OUTPUT
   ^\s*Output\s+\(normal\):\s+${TX_PKTS}\s+packets,\s+${TX_BYTES}\s+bytes
   ^\s*${TX_UNICAST}\s+unicasts,\s+${TX_BROADCAST}\s+broadcasts,\s+${TX_MULTICAST}\s+multicasts,\s+\d+\s+pauses
   ^\s*Output:\s+${TX_ERRORS}\s+output\s+errors,
   ^\s*${TX_ABORTS}\s+aborts,\s+\d+\s+deferred, -> Start
+  ^\s*$$  -> Start
+    
