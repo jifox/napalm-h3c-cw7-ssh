@@ -30,9 +30,9 @@ Value TX_ERRORS (\d+|-)
 Value TX_ABORTS (\d+|-)
 
 Start
-  # 接口名所在行是一个独立的字符串，以此开始记录
+  # The line where the interface name is located is an independent string, and recording starts from this line.
   ^\S+\s*$$ -> Continue.Record
-  # 路由器某个 Serial 接口后面出现了空格，莫名奇妙的 comware bug
+  # A blank space appeared after a serial interface on a router. This is a strange comware bug.
   ^${INTERFACE}\s*$$
   ^(C|c)urrent\s+state:\s+${LINK_STATUS}
   ^(L|l)ine\s+protocol\s+state:\s+${PROTOCOL_STATUS}
@@ -50,8 +50,10 @@ Start
   ^\s*$$  -> Start
   ^\s?Input:\s*${RX_PKTS}\s+packets,\s+${RX_BYTES}\s+bytes(,\s+\d+\s+buffers)?(,\s+${RX_ABORTS}\s+drops)?
   ^\s?Output:\s*${TX_PKTS}\s+packets,\s+${TX_BYTES}\s+bytes(,\s+\d+\s+buffers)?(,\s+${TX_ABORTS}\s+drops)?
-  # 物理接口计数匹配
-  
+  # physical interface count matching
+
+Start
+  ^\s*Input\s+\(total\) -> INPUT
 
 # for physical interfaces
 INPUT
@@ -59,13 +61,10 @@ INPUT
   ^\s*${RX_UNICAST}\s+unicasts,\s+${RX_BROADCAST}\s+broadcasts,\s+${RX_MULTICAST}\s+multicasts,\s+\d+\s+pauses
   ^\s*Input:\s+${RX_ERRORS}\s+input\s+errors,
   ^\s*${RX_CRC}\s+CRC,\s+\d+\s+frame,\s+\d+\s+overruns,\s+${RX_ABORTS}\s+aborts -> OUTPUT
-  ^\s*$$  -> Start
-  
+
 # for physical interfaces
 OUTPUT
   ^\s*Output\s+\(normal\):\s+${TX_PKTS}\s+packets,\s+${TX_BYTES}\s+bytes
   ^\s*${TX_UNICAST}\s+unicasts,\s+${TX_BROADCAST}\s+broadcasts,\s+${TX_MULTICAST}\s+multicasts,\s+\d+\s+pauses
   ^\s*Output:\s+${TX_ERRORS}\s+output\s+errors,
   ^\s*${TX_ABORTS}\s+aborts,\s+\d+\s+deferred, -> Start
-  ^\s*$$  -> Start
-    
