@@ -77,7 +77,10 @@ def parse_null(value, default, func=None, *args, **kwargs):
     if value == "":
         return default
     if func:
-        return func(value, *args, **kwargs)
+        try:
+            return func(value, *args, **kwargs)
+        except Exception:
+            return default
     return value
 
 
